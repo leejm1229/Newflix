@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>NEWSFLIX</title>
+    <style>
+        #player {
+            position: relative ;
+        }
+
+        #high {
+            color: white;
+            width: 35%;
+            height: 700px;
+            padding: 50px;
+            box-sizing: border-box;
+            border: none;
+            font-size: 20px;
+            resize: both;
+        }
+
+        span.highlight {
+            background : linear-gradient(to top, #FFFFFF 100%,transparent 100%);
+            color : black;
+            font: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div style="padding: 20px 0px 0px 0px;" class="wrapper">
+        <!-- MAIN CONTAINER -->
+        <section class="main-container">
+            <div>
+                <a href="/homepage/homepage/">
+                    <center><img src="/static/images/logo.png" alt="Logo Image"></center>
+                </a>
+                <nav class="sub-nav">
+                    <form action="" class="search-bar" style="text-align: right; margin-right: 2%;">
+                        <input type="search" name="search" pattern=".*\S.*" required>
+                        <button class="search-btn" type="submit">
+                            <span>Search</span>
+                        </button>
+                    </form>
+                </nav>
+            </div>
+        </section>
+        <hr>
+    </div>
+
+    <hr>
+
+    <div style = "float:left;">
+        <div style = "float:left;">
+            <div id="player" style="display: inline-block;"></div>
+        </div>
+        <div id="high" style="overflow: auto; color: white; display: inline-block; float:left;" cols="50" >{{text}}</div> 
+    </div>
+
+
+    <h1></h1>
+    <hr>
+    <!-- LINKS -->
+    <footer>
+        <div class="bg11" style="text-align: center;">
+            <div class="container size-h-4 flex-c-c p-tb-15">
+                <span class="f1-s-1 cl0 txt-center">
+                    <br>
+                    <p>Copyright &copy; HTML Codex. All Rights Reserved</p>
+                    <p>Sponsored by &copy; Youtube. All Rights Reserved</p>
+                    <p>Sponsored by &copy; Netflix. All Rights Reserved</p>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // -------------------------------------------------------------------------------------
+        var tag = document.createElement('script');
+    
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);   
+    
+
+        var section = {
+            start: {{start.0}}-1, 
+            end: {{end.0}}
+        };
+
+        var section1 = {
+            start: {{start.1}},
+            end: {{end.1}}
+
+        };
+
+        var section2 = {
+            start: {{start.2}},
+            end: {{end.2}}
+
+        };
+        var mystring = `{{text}}`;
+        document.getElementById("high").innerText  = newstring ;
+        //var target2 = document.getElementById("high");
+        
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player(
+                'player', {
+                left: '0px;',
+                top: '4px;',
+                height: '760px',
+                width: '996px',
+                playerVars: { 'autoplay': 1, 'controls': 1, 'mute': 0 },
+                videoId: '{{address}}',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            }
+            );
+        }
+        
+        function onPlayerReady(event) {
+            player.seekTo(section.start);
+            player.playVideo();
+
+            var find0 = `{{find.0}}`;
+            var regex = new RegExp(find0, "g");
+            var newstring = mystring.replace(regex, "<span class='highlight'>"  + find0 + "</span>");
+            console.log(newstring)
+            document.getElementById("high").innerHTML  = newstring ;
+            
+        }
+
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                var duration = section.end - section.start;
+                var duration1 = section1.end - section1.start;
+                var duration2 = section2.end - section2.start;
+
+                setTimeout(restartVideoSection, duration * 1000);
+                setTimeout(restartVideoSection1, duration1 * 1000 + duration * 1000);
+                setTimeout(stopVideo, duration2 * 1000+duration1 * 1000 + duration * 1000);
+                done = true;
+            }
+        }
+
+        function restartVideoSection() {
+            player.seekTo(section1.start);
+            var find1 = '{{find.1}}';
+            var newstring = mystring.replace(new RegExp(find1, "g"), "<span class='highlight'>" + find1 + "</span>");
+            document.getElementById("high").innerHTML  = newstring ;
+        }
+
+        function restartVideoSection1() {
+            player.seekTo(section2.start);
+            var find2 = `{{find.2}}`;
+            var newstring = mystring.replace(new RegExp(find2, "g"), "<span class='highlight'>" + find2 + "</span>");
+            document.getElementById("high").innerHTML  = newstring ;
+        }
+
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+    </script>
+</body>
+
+</html>

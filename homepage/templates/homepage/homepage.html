@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <title>NEWSFLIX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!-- Link Swiper's CSS -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/swiper.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  {% load sass_tags %}
+  <link href="{% sass_src 'static/css/style.scss' %}" rel="stylesheet" type="text/css" />
+  <link href="{% sass_src 'static/css/index.scss' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div style="padding: 20px 0px 0px 0px;" class="wrapper">
+    <!-- MAIN CONTAINER -->
+    <section class="main-container">
+      <div>
+        <a href="/homepage/homepage/"><center><img style="width: 380px; height:120px;" src="/static/images/logo.png" alt="Logo Image"></center></a>
+        <nav class="sub-nav">
+          <span>
+            <h2 id="clock" style="color:white;"><strong>clock</strong></h2>
+          </span>
+          <form action="" class="search-bar" style="text-align: right; margin-right: 2%;">
+            <input type="search" name="search" pattern=".*\S.*" required>
+            <button class="search-btn" type="submit">
+              <span>Search</span>
+            </button>
+          </form>
+        </nav>
+      </div>
+    </section>
+    <hr>
+  </div>
+  
+  <main>
+    <iframe src="/static/audio/news.mp3"  style='display:none;' allow="autoplay" id="audio"></iframe>
+    <div class="video">
+      <video src="/static/video/news.mp4" autoplay muted loop></video>
+    </div>
+    <div class="description">
+      <h1>NEWSFLIX</h1>
+      <h3>매주 새로운 뉴스 공개</h3>
+      <div class="buttons">
+        <button class="play" onclick="change()"><i class="fa-solid fa-play"></i></button>
+        <button class="detail"><i class="fa-solid fa-circle-info"></i>상세 정보</button>
+      </div>
+    </div>
+  </main>
+  <hr>
+  <!-- Swiper -->
+  <h1>MBC NEWS</h1>
+  <div class="newsflix">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for news in MBCNEWS%}
+        <a href="/detailpage/detailpage/MBC/{{news.url}}" class="swiper-slide"><img
+            src="{{news.img}}"
+            alt="Title">
+        </a>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div> -->
+    </div>
+  </div>
+
+  <h1>SBS NEWS</h1>
+  <div class="newsflix">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for news in SBSNEWS%}
+        <a href="/detailpage/detailpage/SBS/{{news.url}}" class="swiper-slide"><img
+            src="{{news.img}}"
+            alt="Title">
+        </a>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div> -->
+    </div>
+  </div>
+
+  <h1>KBS NEWS</h1>
+  <div class="newsflix">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for news in KBSNEWS%}
+        <a href="/detailpage/detailpage/KBS/{{news.url}}" class="swiper-slide"><img
+            src="{{news.img}}"
+            alt="Title">
+        </a>
+        {% endfor %}
+      </div>
+      <!-- <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div> -->
+    </div>
+  </div>
+
+  <h1></h1>
+  <hr>
+  <!-- LINKS -->
+  <footer>
+    <div class="bg11" style="text-align: center;">
+      <div class="container size-h-4 flex-c-c p-tb-15">
+        <span class="f1-s-1 cl0 txt-center">
+          <p>Copyright &copy; HTML Codex. All Rights Reserved</p>
+          <p>Sponsored by &copy; Youtube. All Rights Reserved</p>
+          <p>Sponsored by &copy; Netflix. All Rights Reserved</p>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/swiper.min.js"></script>
+  <script src="/static/js/main.js"></script>
+
+  <script>
+    function change(){
+      document.getElementById("audio").src = "/static/audio/newss.mp3";
+    }
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 5,
+      spaceBetween: 25,
+      slidesPerGroup: 1,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+
+    var Target = document.getElementById("clock");
+    function clock() {
+      var time = new Date();
+
+      var month = time.getMonth();
+      var date = time.getDate();
+      var day = time.getDay();
+      var week = ['일', '월', '화', '수', '목', '금', '토'];
+
+      var hours = time.getHours();
+      var minutes = time.getMinutes();
+      var seconds = time.getSeconds();
+
+      Target.innerText =
+        ` ${month + 1}/${date} (${week[day]}) ` +
+        `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    }
+    clock();
+    setInterval(clock, 1000);
+
+  </script>
+</body>
+
+</html>

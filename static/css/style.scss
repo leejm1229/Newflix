@@ -1,0 +1,78 @@
+html,
+body {
+    position: relative;
+    height: 100%;
+}
+
+body {
+    background: black;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.swiper-wrapper {
+    padding: 20px 0;
+}
+
+.swiper-slide {
+    transition: 250ms all;
+
+    &:hover {
+        transform: scale(1.2);
+        z-index: 1;
+    }
+
+    &:first-child:hover{
+        margin: 0 30px;
+    }
+
+    &:last-child:hover{
+        margin: 0 -30px;
+    }
+
+    &:nth-child(5):hover{
+        margin: 0 -30px;
+    }
+}
+
+
+.swiper-button-next {
+    --swiper-theme-color: white;
+}
+
+.swiper-button-prev {
+    --swiper-theme-color: white;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: black;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
